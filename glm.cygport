@@ -1,0 +1,35 @@
+inherit cmake
+
+NAME="glm"
+VERSION=0.9.7.6
+RELEASE=1
+CATEGORY="Devel"
+SUMMARY="OpenGL Mathematics C++ template library"
+DESCRIPTION="OpenGL Mathematics (GLM) is a header only C++ mathematics library
+for graphics software based on the OpenGL Shading Language specifications."
+HOMEPAGE="http://glm.g-truc.net/"
+SRC_URI="https://github.com/g-truc/glm/releases/download/${VERSION}/glm-${VERSION}.zip"
+SRC_DIR="glm"
+PATCH_URI="0.9.7.6-tests-compile.patch"
+
+ARCH=noarch
+
+PKG_NAMES="glm-devel glm-doc"
+glm_devel_CONTENTS="
+	--exclude=api --exclude=*.pdf
+	usr/include/glm/
+	usr/lib/cmake/glm/
+	usr/lib/pkgconfig/glm.pc
+	usr/share/doc/
+"
+glm_doc_CATEGORY="Doc"
+glm_doc_CONTENTS="usr/share/doc/glm/api/ usr/share/doc/glm/*.pdf"
+
+CYGCMAKE_ARGS="-DGLM_TEST_ENABLE=ON"
+
+src_install() {
+	cd ${B}
+	cyginstall
+
+	dodoc ${S}/doc/glm.pdf ${S}/doc/api/
+}
